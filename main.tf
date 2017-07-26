@@ -1,9 +1,8 @@
 # terraform apply -target=null_resource.terraform-provider-statuscake-binary
-
 resource "null_resource" "terraform-provider-statuscake-binary" {
   triggers {
-    # use this to trigger on every run
-    uuid_autotrigger = "${uuid()}"
+    # no sense pulling the same binary on each subsequent run
+    sha1 = "${sha1("${file("terraform-provider-statuscake")}")}"
   }
 
   provisioner "local-exec" {
